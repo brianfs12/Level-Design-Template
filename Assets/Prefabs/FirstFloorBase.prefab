@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2887594432154862263}
   m_Layer: 0
-  m_Name: FirstFloor
+  m_Name: FirstFloorBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
