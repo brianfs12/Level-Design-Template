@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using TMPro;
 
 public class PlayerMovementAdvancedDone : MonoBehaviour
 {
+    PlayerInput pInput;
+
     [Header("Movement")]
     private float moveSpeed;
     private float desiredMoveSpeed;
@@ -72,6 +75,7 @@ public class PlayerMovementAdvancedDone : MonoBehaviour
 
     private void Start()
     {
+        pInput = GetComponent<PlayerInput>();
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
 
@@ -104,13 +108,13 @@ public class PlayerMovementAdvancedDone : MonoBehaviour
 
     private void MyInput()
     {
-        horizontalInput = Input.GetAxisRaw("Horizontal");
-        verticalInput = Input.GetAxisRaw("Vertical");
+        horizontalInput = pInput.actions["Movement"].ReadValue<Vector2>().x;
+        verticalInput = pInput.actions["Movement"].ReadValue<Vector2>().y;
 
         // when to jump
-        if (Input.GetKey(jumpKey) && readyToJump && grounded)
+
+        if (pInput.actions["Jump"].ReadValue<float>() >0f && readyToJump && grounded)
         {
-            print("ewe");
             readyToJump = false;
 
             Jump();
@@ -119,7 +123,7 @@ public class PlayerMovementAdvancedDone : MonoBehaviour
         }
 
         // start crouch
-        if (Input.GetKeyDown(crouchKey) && horizontalInput == 0 && verticalInput == 0)
+        if (pInput.actions["Crouch"].ReadValue<float>() > 0 )
         {
             transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
             rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
@@ -128,7 +132,7 @@ public class PlayerMovementAdvancedDone : MonoBehaviour
         }
 
         // stop crouch
-        if (Input.GetKeyUp(crouchKey))
+        if (pInput.actions["Crouch"].ReadValue<float>() <1 && crouching)
         {
             transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
 
@@ -159,7 +163,7 @@ public class PlayerMovementAdvancedDone : MonoBehaviour
         }
 
         // Mode - Sprinting
-        else if (grounded && Input.GetKey(sprintKey))
+        else if (grounded && pInput.actions["Sprint"].ReadValue<float>()>0)
         {
             state = MovementState.sprinting;
             desiredMoveSpeed = sprintSpeed;
@@ -183,8 +187,6 @@ public class PlayerMovementAdvancedDone : MonoBehaviour
         {
             StopAllCoroutines();
             StartCoroutine(SmoothlyLerpMoveSpeed());
-
-            print("Lerp Started!");
         }
         else
         {

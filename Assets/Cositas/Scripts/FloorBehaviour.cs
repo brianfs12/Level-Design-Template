@@ -7,15 +7,9 @@ public class FloorBehaviour : MonoBehaviour
     enum TYPE_OF_TILE
     {
         NORMAL,
-        SOLID,
         SPIKES,
-        TIME_SPIKES,
-        PERMANENT_SPIKES,
-        EXIT_SPIKES,
-        PROXIMITY_SPIKES,
         FALLING_FLOOR,
-        EXIT,
-        PROTECTION
+        GOAL
     };
 
     [SerializeField] TYPE_OF_TILE typeOfTile;
@@ -40,5 +34,18 @@ public class FloorBehaviour : MonoBehaviour
     void Update()
     {
         
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            switch (typeOfTile)
+            {
+                case TYPE_OF_TILE.SPIKES:
+                    collision.gameObject.GetComponent<PlayerStats>().RecibirDaño(); ;
+                    break;
+            }
+        }
     }
 }
