@@ -4668,10 +4668,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemyChaser (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 6238240137736277434, guid: 16b47dc9e5c131e40bd05d40ab858bef, type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 16b47dc9e5c131e40bd05d40ab858bef, type: 3}
 --- !u!1 &1233942929
